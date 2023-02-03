@@ -46,6 +46,10 @@ async fn root() -> &'static str {
 pub struct IndexTemplate {
     pub title: String,
     pub markdown: String,
+    pub name: String,
+    pub subname: String,
+    pub description: String,
+    pub date: String,
 }
 
 async fn handle_article(Path(path): Path<String>,State(state): State<Arc<AppState>>) -> Result<Html<String>, StatusCode> {
@@ -95,7 +99,14 @@ async fn handle_article(Path(path): Path<String>,State(state): State<Arc<AppStat
         let mut html_output = String::new();
         html::push_html(&mut html_output, parser);
         //return Ok(Html(html_output));
-        let tpl = IndexTemplate { title:"test markdown".to_string(),markdown:html_output };
+        let tpl = IndexTemplate { 
+            title:"test markdown".to_string(),
+            markdown:html_output,
+            name: "qiuzhiqian".to_string(),
+            subname: "xiamengliang".to_string(),
+            description: "a good boy!".to_string(),
+            date: "2023-02-03 14:27:31".to_string(),
+        };
         let html = tpl.render().map_err(|_| StatusCode::BAD_REQUEST)?;
         return Ok(Html(html));
     }
